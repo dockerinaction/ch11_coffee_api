@@ -29,6 +29,3 @@ def add_coffeeshop():
         return response
     return Response(status=201)
 
-@api.route('/ping')
-def ping():
-    return os.getenv('HOSTNAME')
