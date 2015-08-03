@@ -7,14 +7,14 @@ dbstate:
     file: docker-compose.yml
     service: data
   volumes:
-    - /data
+    - /var/lib/postgresql/data/pgdata
 
 db:
   image: postgres
   volumes_from:
     - dbstate
   environment:
-    - PGDATA=/data
+    - PGDATA=/var/lib/postgresql/data/pgdata
     - POSTGRES_PASSWORD=development
 
 proxy:
