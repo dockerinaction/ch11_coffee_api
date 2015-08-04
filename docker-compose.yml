@@ -30,6 +30,8 @@ coffee:
   build: ./coffee
   expose:
     - 3000
+  ports:
+    - "0:3000"
   links:
     - db:db
   environment:
