@@ -1,6 +1,7 @@
 data:
   image: gliderlabs/alpine
   command: echo Data Container
+  user: 999:999
 
 dbstate:
   extends:
@@ -9,6 +10,7 @@ dbstate:
   volumes:
     - /var/lib/postgresql/data/pgdata
 
+# the postgres image uses gosu to change to the postgres user
 db:
   image: postgres
   volumes_from:
@@ -17,6 +19,7 @@ db:
     - PGDATA=/var/lib/postgresql/data/pgdata
     - POSTGRES_PASSWORD=development
 
+# the nginx image uses user de-escalation to change to the nginx user
 proxy:
   image: nginx:latest
   volumes:
@@ -28,6 +31,7 @@ proxy:
 
 coffee:
   build: ./coffee
+  user: 777:777
   expose:
     - 3000
   ports:
