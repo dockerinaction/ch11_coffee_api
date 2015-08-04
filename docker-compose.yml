@@ -2,6 +2,10 @@ data:
   image: gliderlabs/alpine
   command: echo Data Container
   user: 999:999
+  labels:
+    com.dockerinaction.chapter: "11"
+    com.dockerinaction.example: "Coffee API"
+    com.dockerinaction.role: "Volume Container"
 
 dbstate:
   extends:
@@ -12,26 +16,36 @@ dbstate:
 
 # the postgres image uses gosu to change to the postgres user
 db:
-  image: postgres
+  image: postgres@sha256:66ba100bc635be1746daadd3ecfa46b51fbb767cd9fbc170edbf33483010065b
   volumes_from:
     - dbstate
   environment:
     - PGDATA=/var/lib/postgresql/data/pgdata
     - POSTGRES_PASSWORD=development
+  labels:
+    com.dockerinaction.chapter: "11"
+    com.dockerinaction.example: "Coffee API"
+    com.dockerinaction.role: "Database"
 
 # the nginx image uses user de-escalation to change to the nginx user
 proxy:
-  image: nginx:latest
+  image: nginx@sha256:a2b8bef3338643176198510fec71c18ceb7834e6f7c45b039ec6e963f43b4005
+  restart: always
   volumes:
     - ./proxy/app.conf:/etc/nginx/conf.d/app.conf
   ports:
     - "8080:8080"
   links:
     - coffee
+  labels:
+    com.dockerinaction.chapter: "11"
+    com.dockerinaction.example: "Coffee API"
+    com.dockerinaction.role: "Load Balancer"
 
 coffee:
   build: ./coffee
   user: 777:777
+  restart: always
   expose:
     - 3000
   ports:
@@ -42,3 +56,7 @@ coffee:
     - COFFEEFINDER_DB_URI=postgresql://postgres:development@db:5432/postgres
     - COFFEEFINDER_CONFIG=development
     - SERVICE_NAME=coffee
+  labels:
+    com.dockerinaction.chapter: "11"
+    com.dockerinaction.example: "Coffee API"
+    com.dockerinaction.role: "Application Logic"
