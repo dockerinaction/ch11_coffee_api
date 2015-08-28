@@ -16,7 +16,7 @@ dbstate:
 
 # the postgres image uses gosu to change to the postgres user
 db:
-  image: postgres@sha256:66ba100bc635be1746daadd3ecfa46b51fbb767cd9fbc170edbf33483010065b
+  image: postgres
   volumes_from:
     - dbstate
   environment:
@@ -29,7 +29,7 @@ db:
 
 # the nginx image uses user de-escalation to change to the nginx user
 proxy:
-  image: nginx@sha256:a2b8bef3338643176198510fec71c18ceb7834e6f7c45b039ec6e963f43b4005
+  image: nginx
   restart: always
   volumes:
     - ./proxy/app.conf:/etc/nginx/conf.d/app.conf
